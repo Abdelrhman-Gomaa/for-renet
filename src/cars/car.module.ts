@@ -1,12 +1,16 @@
 import { Module } from '@nestjs/common';
-import { CarController } from './car.controller';
-import { CarService } from './car.service';
-import { CarsProvider } from './car,provider';
+import { CarController } from './controllers/car.controller';
+import { CarService } from './services/car.service';
+import { CarsProvider } from './providers/car.provider';
+import { UserRentCarService } from './services/user-rent-cars.service';
+import { UserRentCarController } from './controllers/user-rent-cars.controller';
+import { UserRentCarsProvider } from './providers/user-rent-car.provider';
+import { UserModule } from 'src/user/user.module';
 
 @Module({
-    imports: [],
-    controllers: [CarController],
-    providers: [CarService, ...CarsProvider],
-    exports: [CarService]
+    imports: [UserModule],
+    controllers: [CarController, UserRentCarController],
+    providers: [CarService, UserRentCarService, ...CarsProvider, ...UserRentCarsProvider],
+    exports: [CarService, UserRentCarService]
 })
 export class CarModule { }

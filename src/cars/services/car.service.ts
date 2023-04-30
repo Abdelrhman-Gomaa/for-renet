@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { Repositories } from 'src/database/database.model.repositories';
-import { Car } from './models/car.model';
-import { CreateCarBoardInput } from './input/create-car-board.input';
-import { UpdateCarInput } from './input/update-car.input';
+import { Car } from '../models/car.model';
+import { CreateCarBoardInput } from '../input/create-car-board.input';
+import { UpdateCarInput } from '../input/update-car.input';
 import { BaseHttpException } from 'src/exceptions/base-http-exception';
 import { ErrorCodeEnum } from 'src/exceptions/error-code.enum';
 

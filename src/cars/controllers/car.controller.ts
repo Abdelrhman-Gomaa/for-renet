@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
-import { CarService } from './car.service';
-import { CreateCarBoardInput } from './input/create-car-board.input';
+import { CarService } from '../services/car.service';
+import { CreateCarBoardInput } from '../input/create-car-board.input';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Car')
