@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { DatabaseModule } from './database/database.module';
 import { UserModule } from './user/user.module';
 import { ConfigModule } from '@nestjs/config';
+import { CarModule } from './cars/car.module';
 
 @Module({
   imports: [
@@ -11,7 +12,8 @@ import { ConfigModule } from '@nestjs/config';
       envFilePath: '.env',
     }),
     DatabaseModule,
-    UserModule
+    UserModule,
+    CarModule
   ],
   controllers: [AppController],
   providers: [AppService],
