@@ -17,4 +17,8 @@ export class CarService {
     async getAllCars() {
         return await this.carRepo.findAll();
     }
+
+    async getOneCar(id: string) {
+        return await this.carRepo.findOne({ where: { id } });
+    }
 }

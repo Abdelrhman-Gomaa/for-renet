@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CarService } from './car.service';
 import { CreateCarBoardInput } from './input/create-car-board.input';
 import { ApiTags } from '@nestjs/swagger';
@@ -18,5 +18,10 @@ export class CarController {
     @Get()
     async getAllCars() {
         return await this.carService.getAllCars();
+    }
+
+    @Get('/:id')
+    async getOneCar(@Param('id') id: string) {
+        return await this.carService.getOneCar(id);
     }
 }
