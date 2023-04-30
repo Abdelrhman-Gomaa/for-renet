@@ -1,6 +1,6 @@
 import { Sequelize } from "sequelize-typescript";
 import { Car } from 'src/cars/models/car.model';
-import { UserRentCar } from 'src/cars/models/user-rent-car';
+import { UserRentCar } from 'src/cars/models/user-rent-car.model';
 import { User } from 'src/user/models/user.model';
 
 export const databaseProviders = [

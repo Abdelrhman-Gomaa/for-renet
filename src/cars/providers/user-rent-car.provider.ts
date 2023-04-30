@@ -1,5 +1,5 @@
 import { Repositories } from 'src/database/database.model.repositories';
-import { UserRentCar } from '../models/user-rent-car';
+import { UserRentCar } from '../models/user-rent-car.model';
 
 export const UserRentCarsProvider = [
   {
