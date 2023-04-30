@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize-typescript";
+import { Car } from 'src/cars/models/car.model';
 import { User } from 'src/user/models/user.model';
 
 export const databaseProviders = [
@@ -16,7 +17,7 @@ export const databaseProviders = [
           timestamps: false
         },
       });
-      sequelize.addModels([User]);
+      sequelize.addModels([User, Car]);
 
       sequelize.authenticate()
         .then(() => {
@@ -26,7 +27,7 @@ export const databaseProviders = [
           console.error('Unable to connect to the database ❌❌❌❌❌❌❌❌❌', err);
         });
 
-      // sequelize.sync({ alter: true, force: true })
+      // sequelize.sync({ alter: true }) //, force: true
       //   .then(() => {
       //     console.log(`Models and relation synchronization In DB Successfully ✔✔✔✔✔✔✔✔✔✔✔✔✔✔✔`);
       //   }).catch((err) => {
