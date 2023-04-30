@@ -13,4 +13,8 @@ export class CarService {
     async createCarBoard(input: CreateCarBoardInput) {
         return await this.carRepo.create({ ...input });
     }
+
+    async getAllCars() {
+        return await this.carRepo.findAll();
+    }
 }

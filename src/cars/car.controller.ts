@@ -1,10 +1,10 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
 import { CarService } from './car.service';
 import { CreateCarBoardInput } from './input/create-car-board.input';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('Car')
-@Controller()
+@Controller('/car')
 export class CarController {
     constructor(
         private readonly carService: CarService
@@ -13,5 +13,10 @@ export class CarController {
     @Post()
     async createCarBoard(@Body() input: CreateCarBoardInput) {
         return await this.carService.createCarBoard(input);
+    }
+
+    @Get()
+    async getAllCars() {
+        return await this.carService.getAllCars();
     }
 }
