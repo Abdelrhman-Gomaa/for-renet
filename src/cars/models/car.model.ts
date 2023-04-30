@@ -63,7 +63,7 @@ export class Car extends Model {
 
     @ApiProperty()
     @AllowNull(false)
-    @Column({ type: DataType.INTEGER })
+    @Column({ type: DataType.DOUBLE })
     oneToHundredTime: number;
 
     @ApiProperty()
