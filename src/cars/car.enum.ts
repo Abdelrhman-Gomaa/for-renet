@@ -28,3 +28,9 @@ export enum CarrierTypeEnum {
     AUTOMATIC = 'AUTOMATIC',
     MANUAL = 'MANUAL'
 }
+
+export enum RentTypeEnum {
+    HOUR = 'HOUR',
+    DAY = 'DAY',
+    MONTH = 'MONTH',
+}

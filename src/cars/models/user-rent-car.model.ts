@@ -12,6 +12,7 @@ import {
 } from 'sequelize-typescript';
 import { User } from 'src/user/models/user.model';
 import { Car } from './car.model';
+import { RentTypeEnum } from '../car.enum';
 
 @Table
 export class UserRentCar extends Model {
@@ -56,4 +57,9 @@ export class UserRentCar extends Model {
     @AllowNull(false)
     @Column({ type: DataType.INTEGER })
     period: number;
+
+    @ApiProperty()
+    @AllowNull(false)
+    @Column({ type: DataType.ENUM(...Object.values(RentTypeEnum)) })
+    rentType: RentTypeEnum;
 }
