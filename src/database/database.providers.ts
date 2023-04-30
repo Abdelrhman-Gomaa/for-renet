@@ -1,5 +1,6 @@
 import { Sequelize } from "sequelize-typescript";
 import { Car } from 'src/cars/models/car.model';
+import { UserRentCar } from 'src/cars/models/user-rent-car';
 import { User } from 'src/user/models/user.model';
 
 export const databaseProviders = [
@@ -17,7 +18,7 @@ export const databaseProviders = [
           timestamps: false
         },
       });
-      sequelize.addModels([User, Car]);
+      sequelize.addModels([User, Car, UserRentCar]);
 
       sequelize.authenticate()
         .then(() => {
