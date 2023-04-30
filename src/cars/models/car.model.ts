@@ -76,4 +76,13 @@ export class Car extends Model {
     @Column({ type: DataType.INTEGER })
     rentPricePerDay: number;
 
+    @ApiProperty()
+    @AllowNull(false)
+    @Column({ type: DataType.INTEGER })
+    rentPricePerHour: number;
+
+    @ApiProperty()
+    @AllowNull(false)
+    @Column({ type: DataType.INTEGER })
+    rentPricePerMonth: number;
 }
