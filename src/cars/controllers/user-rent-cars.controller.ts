@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UserRentCarService } from '../services/user-rent-cars.service';
 import { UserRentCarsInput } from '../input/user-rent-car.input';
@@ -13,5 +13,10 @@ export class UserRentCarController {
     @Post()
     async createCarBoard(@Body() input: UserRentCarsInput) {
         return await this.userRentCarService.createCarBoard(input);
+    }
+
+    @Get()
+    async carsAvailability() {
+        return await this.userRentCarService.carsAvailability();
     }
 }

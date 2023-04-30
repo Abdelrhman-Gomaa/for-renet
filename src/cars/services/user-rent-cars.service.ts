@@ -6,8 +6,9 @@ import { Car } from '../models/car.model';
 import { BaseHttpException } from 'src/exceptions/base-http-exception';
 import { ErrorCodeEnum } from 'src/exceptions/error-code.enum';
 import { User } from 'src/user/models/user.model';
-import { RentTypeEnum } from '../car.enum';
+import { CarStatusEnum, RentTypeEnum } from '../car.enum';
 import { addDays, addHours, addMonths } from 'date-fns';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class UserRentCarService {
@@ -48,6 +49,45 @@ export class UserRentCarService {
             totalPrice,
             endDate
         });
+    }
+
+    async carsAvailability() {
+        const cars = await this.carRepo.findAll();
+        let carsIds = cars.map(car => car.id);
+        const carsRent = await this.userRentCarRepo.findAll({ where: { carId: carsIds, } });
+        let carsRentIds = [];
+        carsRent.map(car => {
+            if (car.startDate < new Date() && car.endDate > new Date()) {
+                carsRentIds.push(car.carId);
+            }
+        });
+        let carsAvailability = cars.map(car => {
+            return carsRent.map(carRent => {
+                if (carRent.startDate < new Date() && carRent.endDate > new Date()) {
+                    if (car.id === carRent.carId) {
+                        const availableInMinutes = (carRent.endDate.valueOf() - new Date().valueOf()) / 1000 / 60 / 60;
+                        console.log(car.brand, car.model);
+                        return {
+                            brand: car.brand,
+                            model: car.model,
+                            year: car.modelYear,
+                            status: CarStatusEnum.RENTED,
+                            availableIn: availableInMinutes
+                        };
+                    }
+                }
+                console.log('>>>>>>>>>>>>>>>', car.brand, car.model);
+                return {
+                    brand: car.brand,
+                    model: car.model,
+                    year: car.modelYear,
+                    status: CarStatusEnum.AVAILABLE,
+                    availableIn: 0
+                };
+            });
+        });
+
+        return carsAvailability;
     }
 
 }
