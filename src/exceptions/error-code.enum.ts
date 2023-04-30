@@ -8,4 +8,5 @@ export enum ErrorCodeEnum {
     USERNAME_OR_EMAIL_ALREADY_EXIST = 606,
     INVALID_TOKEN = 607,
     ALLOWED_FOR_ADMIN_ONLY = 608,
+    CAN_NOT_FIND_CAR = 609
 }

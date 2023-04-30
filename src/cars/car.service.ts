@@ -2,6 +2,9 @@ import { Inject, Injectable } from '@nestjs/common';
 import { Repositories } from 'src/database/database.model.repositories';
 import { Car } from './models/car.model';
 import { CreateCarBoardInput } from './input/create-car-board.input';
+import { UpdateCarInput } from './input/update-car.input';
+import { BaseHttpException } from 'src/exceptions/base-http-exception';
+import { ErrorCodeEnum } from 'src/exceptions/error-code.enum';
 
 @Injectable()
 export class CarService {
@@ -19,6 +22,14 @@ export class CarService {
     }
 
     async getOneCar(id: string) {
-        return await this.carRepo.findOne({ where: { id } });
+        const car = await this.carRepo.findOne({ where: { id } });
+        if (!car) throw new BaseHttpException(ErrorCodeEnum.CAN_NOT_FIND_CAR);
+        return car;
+    }
+
+    async updateCar(id: string, input: UpdateCarInput) {
+        const car = await this.carRepo.findOne({ where: { id } });
+        if (!car) throw new BaseHttpException(ErrorCodeEnum.CAN_NOT_FIND_CAR);
+        return await this.carRepo.update({ ...input }, { where: { id } });
     }
 }
