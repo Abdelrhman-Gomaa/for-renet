@@ -1,6 +1,6 @@
 import { Model, Table, PrimaryKey, Default, DataType, Column, AllowNull } from 'sequelize-typescript';
 import { ApiProperty } from '@nestjs/swagger';
-import { CarrierTypeEnum, CarsBrandEnum } from '../car.enum';
+import { CarStatusEnum, CarrierTypeEnum, CarsBrandEnum } from '../car.enum';
 
 @Table
 export class Car extends Model {
@@ -85,4 +85,9 @@ export class Car extends Model {
     @AllowNull(false)
     @Column({ type: DataType.INTEGER })
     rentPricePerMonth: number;
+    
+    @ApiProperty()
+    @AllowNull(true)
+    @Column({ type: DataType.ENUM(...Object.values(CarStatusEnum)) })
+    carStatus?: CarStatusEnum;
 }

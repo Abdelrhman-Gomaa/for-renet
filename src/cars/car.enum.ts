@@ -34,3 +34,9 @@ export enum RentTypeEnum {
     DAY = 'DAY',
     MONTH = 'MONTH',
 }
+
+export enum CarStatusEnum {
+    AVAILABLE = 'AVAILABLE',
+    RENTED = 'RENTED',
+    IN_MAINTENANCE = 'IN_MAINTENANCE'
+}
