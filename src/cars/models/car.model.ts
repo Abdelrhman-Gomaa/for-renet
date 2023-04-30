@@ -22,6 +22,11 @@ export class Car extends Model {
     model: string;
 
     @ApiProperty()
+    @AllowNull(true)
+    @Column({ type: DataType.STRING })
+    thumbnail?: string;
+
+    @ApiProperty()
     @AllowNull(false)
     @Column({ type: DataType.INTEGER })
     modelYear: number;
