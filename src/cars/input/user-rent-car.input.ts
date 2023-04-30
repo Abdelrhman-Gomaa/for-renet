@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { RentTypeEnum } from '../car.enum';
 
 export class UserRentCarsInput {
     
@@ -21,5 +22,10 @@ export class UserRentCarsInput {
     @IsNotEmpty()
     @IsNumber()
     @ApiProperty()
-    endDate: number;
+    period: number;
+
+    @IsNotEmpty()
+    @IsEnum(RentTypeEnum)
+    @ApiProperty({ enum: RentTypeEnum })
+    rentType: RentTypeEnum;
 }
