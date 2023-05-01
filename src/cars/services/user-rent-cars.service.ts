@@ -21,7 +21,7 @@ export class UserRentCarService {
         private readonly userRepo: typeof User,
     ) { }
 
-    async createCarBoard(input: UserRentCarsInput) {
+    async UserRentCarsRequest(input: UserRentCarsInput) {
         const car = await this.carRepo.findOne({ where: { id: input.carId } });
         if (!car) throw new BaseHttpException(ErrorCodeEnum.CAN_NOT_FIND_CAR);
         const user = await this.userRepo.findOne({ where: { id: input.userId } });
@@ -57,11 +57,11 @@ export class UserRentCarService {
         const carsRent = await this.userRentCarRepo.findAll({ where: { carId: carsIds, } });
         let carsRentIds = [];
         let carsFixedIds = [];
-        let checkMaintenanceTime = new Date().valueOf() + 7198000;
         carsRent.map(car => {
+            let checkMaintenanceTime = car.endDate.valueOf() + 7198000;
             if (car.startDate < new Date() && car.endDate > new Date()) {
                 carsRentIds.push(car.carId);
-            } else if (car.endDate < new Date() && car.endDate.valueOf() < checkMaintenanceTime) {
+            } else if (car.endDate.valueOf() < new Date().valueOf() && checkMaintenanceTime > new Date().valueOf()) {
                 carsFixedIds.push(car.carId);
             }
         });
@@ -70,29 +70,33 @@ export class UserRentCarService {
         await this.carRepo.update({ carStatus: CarStatusEnum.IN_MAINTENANCE }, { where: { id: carsFixedIds } });
 
         const carsAfterRefresh = await this.carRepo.findAll();
-
-        // let carsAvailability = carsAfterRefresh.map(car => {
-        //     let availableIn = 0;
-        //     return carsRent.map(carRent => {
-        //         let availableInSecond;
-        //         if (car.id === carRent.carId && carRent.startDate < new Date() && carRent.endDate > new Date()) {
-        //             availableInSecond = ((carRent.endDate.valueOf() - new Date().valueOf()) + 7198000) / 1000; /// 60 / 60;
-        //             if (availableInSecond > 0) availableIn = availableInSecond;
-        //         }
-        //         else if (car.id === carRent.carId && carRent.endDate < new Date() && carRent.endDate.valueOf() < checkMaintenanceTime) {
-        //             availableInSecond = (carRent.endDate.valueOf() - new Date().valueOf()) / 1000; /// 60 / 60;
-        //             if (availableInSecond > 0) availableIn = availableInSecond;
-        //         }
-        //         return {
-        //             brand: car.brand,
-        //             model: car.model,
-        //             year: car.modelYear,
-        //             status: car.carStatus,
-        //             availableIn: availableIn
-        //         };
-        //     });
-        // });
         return carsAfterRefresh;
+    }
+
+    async availableIn(car: Car) {
+        const carRent = await this.userRentCarRepo.findAll({ where: { carId: car.id } });
+        let availableIn = 0;
+        carRent.map(carRent => {
+            let checkMaintenanceTime = carRent.endDate.valueOf() + 7198000;
+            let availableInSecond;
+            if (car.id === carRent.carId && carRent.startDate < new Date() && carRent.endDate > new Date()) {
+                availableInSecond = ((carRent.endDate.valueOf() - new Date().valueOf()) + 7198000) / 1000 / 60 / 60; /// 60 / 60;
+                if (availableInSecond > 0) availableIn = availableInSecond;
+            }
+            else if (car.id === carRent.carId && carRent.endDate < new Date() && carRent.endDate.valueOf() < checkMaintenanceTime) {
+                availableInSecond = (carRent.endDate.valueOf() - new Date().valueOf()) / 1000 / 60 / 60; /// 60 / 60;
+                if (availableInSecond > 0) availableIn = availableInSecond;
+            }
+        });
+        let availableTimeInHour = (Math.round(availableIn * 100) / 100).toFixed(2);
+        const minutes = availableTimeInHour.split('.')[1];
+        const timeInMin = (parseFloat(minutes) / 100) * 60;
+        const timeInMinutes = (Math.round(timeInMin * 100) / 100).toFixed(0);
+        const timeInHours = availableTimeInHour.split('.')[0];
+        return {
+            hours: parseInt(timeInHours),
+            minutes: parseInt(timeInMinutes)
+        };
     }
 
 }
