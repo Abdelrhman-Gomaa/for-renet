@@ -56,38 +56,43 @@ export class UserRentCarService {
         let carsIds = cars.map(car => car.id);
         const carsRent = await this.userRentCarRepo.findAll({ where: { carId: carsIds, } });
         let carsRentIds = [];
+        let carsFixedIds = [];
+        let checkMaintenanceTime = new Date().valueOf() + 7198000;
         carsRent.map(car => {
             if (car.startDate < new Date() && car.endDate > new Date()) {
                 carsRentIds.push(car.carId);
+            } else if (car.endDate < new Date() && car.endDate.valueOf() < checkMaintenanceTime) {
+                carsFixedIds.push(car.carId);
             }
         });
-        let carsAvailability = cars.map(car => {
-            return carsRent.map(carRent => {
-                if (carRent.startDate < new Date() && carRent.endDate > new Date()) {
-                    if (car.id === carRent.carId) {
-                        const availableInMinutes = (carRent.endDate.valueOf() - new Date().valueOf()) / 1000 / 60 / 60;
-                        console.log(car.brand, car.model);
-                        return {
-                            brand: car.brand,
-                            model: car.model,
-                            year: car.modelYear,
-                            status: CarStatusEnum.RENTED,
-                            availableIn: availableInMinutes
-                        };
-                    }
-                }
-                console.log('>>>>>>>>>>>>>>>', car.brand, car.model);
-                return {
-                    brand: car.brand,
-                    model: car.model,
-                    year: car.modelYear,
-                    status: CarStatusEnum.AVAILABLE,
-                    availableIn: 0
-                };
-            });
-        });
+        await this.carRepo.update({ carStatus: CarStatusEnum.AVAILABLE }, { where: { id: carsIds } });
+        await this.carRepo.update({ carStatus: CarStatusEnum.RENTED }, { where: { id: carsRentIds } });
+        await this.carRepo.update({ carStatus: CarStatusEnum.IN_MAINTENANCE }, { where: { id: carsFixedIds } });
 
-        return carsAvailability;
+        const carsAfterRefresh = await this.carRepo.findAll();
+
+        // let carsAvailability = carsAfterRefresh.map(car => {
+        //     let availableIn = 0;
+        //     return carsRent.map(carRent => {
+        //         let availableInSecond;
+        //         if (car.id === carRent.carId && carRent.startDate < new Date() && carRent.endDate > new Date()) {
+        //             availableInSecond = ((carRent.endDate.valueOf() - new Date().valueOf()) + 7198000) / 1000; /// 60 / 60;
+        //             if (availableInSecond > 0) availableIn = availableInSecond;
+        //         }
+        //         else if (car.id === carRent.carId && carRent.endDate < new Date() && carRent.endDate.valueOf() < checkMaintenanceTime) {
+        //             availableInSecond = (carRent.endDate.valueOf() - new Date().valueOf()) / 1000; /// 60 / 60;
+        //             if (availableInSecond > 0) availableIn = availableInSecond;
+        //         }
+        //         return {
+        //             brand: car.brand,
+        //             model: car.model,
+        //             year: car.modelYear,
+        //             status: car.carStatus,
+        //             availableIn: availableIn
+        //         };
+        //     });
+        // });
+        return carsAfterRefresh;
     }
 
 }
