@@ -27,9 +27,10 @@ export class CarService {
         return car;
     }
 
-    async updateCar(id: string, input: UpdateCarInput) {
+    async updateCarBoard(id: string, input: UpdateCarInput) {
         const car = await this.carRepo.findOne({ where: { id } });
         if (!car) throw new BaseHttpException(ErrorCodeEnum.CAN_NOT_FIND_CAR);
-        return await this.carRepo.update({ ...input }, { where: { id } });
+        await this.carRepo.update({ ...input }, { where: { id } });
+        return await this.carRepo.findOne({ where: { id } });
     }
 }

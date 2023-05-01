@@ -2,6 +2,7 @@ import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import { CarService } from '../services/car.service';
 import { CreateCarBoardInput } from '../input/create-car-board.input';
 import { ApiTags } from '@nestjs/swagger';
+import { UpdateCarInput } from '../input/update-car.input';
 
 @ApiTags('Car')
 @Controller('/car')
@@ -26,7 +27,7 @@ export class CarController {
     }
 
     @Patch('/:id')
-    async updateCar(@Param('id') id: string, @Body() input: CreateCarBoardInput) {
-        return await this.carService.updateCar(id, input);
+    async updateCar(@Param('id') id: string, @Body() input: UpdateCarInput) {
+        return await this.carService.updateCarBoard(id, input);
     }
 }

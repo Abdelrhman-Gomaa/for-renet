@@ -1,3 +1,5 @@
+import { registerEnumType } from '@nestjs/graphql';
+
 export enum CarsBrandEnum {
     BMW = 'BMW',
     MERCEDES_BENZ = 'MERCEDES_BENZ',
@@ -23,20 +25,24 @@ export enum CarsBrandEnum {
     JAGUAR = 'JAGUAR',
     LAND_ROVER = 'LAND_ROVER'
 }
+registerEnumType(CarsBrandEnum, { name: 'CarsBrandEnum' });
 
 export enum CarrierTypeEnum {
     AUTOMATIC = 'AUTOMATIC',
     MANUAL = 'MANUAL'
 }
+registerEnumType(CarrierTypeEnum, { name: 'CarrierTypeEnum' });
 
 export enum RentTypeEnum {
     HOUR = 'HOUR',
     DAY = 'DAY',
     MONTH = 'MONTH',
 }
+registerEnumType(RentTypeEnum, { name: 'RentTypeEnum' });
 
 export enum CarStatusEnum {
     AVAILABLE = 'AVAILABLE',
     RENTED = 'RENTED',
     IN_MAINTENANCE = 'IN_MAINTENANCE'
 }
+registerEnumType(CarStatusEnum, { name: 'CarStatusEnum' });
