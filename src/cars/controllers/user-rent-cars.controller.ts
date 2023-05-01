@@ -12,7 +12,7 @@ export class UserRentCarController {
 
     @Post()
     async createCarBoard(@Body() input: UserRentCarsInput) {
-        return await this.userRentCarService.createCarBoard(input);
+        return await this.userRentCarService.UserRentCarsRequest(input);
     }
 
     @Get()
