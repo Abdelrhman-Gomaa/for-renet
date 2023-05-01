@@ -1,14 +1,15 @@
 import { Field, ID, InputType } from '@nestjs/graphql';
 import { ApiProperty, PartialType } from "@nestjs/swagger";
 import { CreateCarBoardInput } from './create-car-board.input';
-import { IsNotEmpty, IsEnum, IsString, IsNumber, IsUUID } from 'class-validator';
+import { IsNotEmpty, IsEnum, IsString, IsNumber, IsUUID, IsOptional } from 'class-validator';
 import { CarsBrandEnum, CarrierTypeEnum } from '../car.enum';
 
 @InputType()
 export class UpdateCarInput {
     @IsUUID()
+    @IsOptional()
     @Field(() => ID)
-    id: string;
+    id?: string;
 
     @IsEnum(CarsBrandEnum)
     @ApiProperty({ enum: CarsBrandEnum })
