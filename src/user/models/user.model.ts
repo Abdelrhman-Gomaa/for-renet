@@ -36,7 +36,15 @@ export class User extends Model {
     @Column(DataType.STRING)
     @ApiProperty()
     nation: string;
+   
+     @Column(DataType.STRING)
+    @ApiProperty()
+    nation1: string;
 
+     @Column(DataType.STRING)
+    @ApiProperty()
+    nation4: string;
+   
     @Column(DataType.STRING)
     @ApiProperty()
     phoneNumber: string;
